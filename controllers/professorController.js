@@ -1,7 +1,5 @@
 let Professor = require('../models/professor');
 let {isSignedIn} = require('../controllers/authController');
-const { constant } = require('lodash');
-const { update } = require('../models/professor');
 
 
 exports.addProfessor = (req, res) => {
@@ -47,6 +45,7 @@ exports.expandProfessor = (req,res) =>
 
 
 
+// This function sends all professors from a given institute and a given department
 exports.getAllProfessors = (req, res) => 
 {
     const instName = req.params.instituteName;
