@@ -34,6 +34,7 @@ app.use(cookieParser());
 app.use(cors());
 
 app.use("/api",profRoute)
+app.use("/api",authRoute)
 
 //DB Connection
 
