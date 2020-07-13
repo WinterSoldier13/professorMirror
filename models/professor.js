@@ -1,12 +1,8 @@
 var moongoose = require("mongoose");
+var mongo = require("mongodb")
 
 var professorSchema = new moongoose.Schema(
     {
-        id:
-        {
-            type:String,
-            unique:true,  
-        },
         name:
         {
             type: String,
@@ -32,33 +28,46 @@ var professorSchema = new moongoose.Schema(
             trim: true,
             required: true
         },
-        subject:
-        {
-            type: String,
-            trim:true,
-            required: false
-        },
-
         rating_one:
         {
-            type: Number,
+            type: Array,
            
-            default:0
+            default:[]
         },
         rating_two:
         {
-            type: Number,
-            default:0
+            type: Array,
+            default:[]
         },
         rating_three:
         {
-            type: Number,
-            default:0
+            type: Array,
+            default:[]
         },
         rating_four:
         {
-            type: Number,
-            default:0
+            type: Array,
+            default:[]
+        },
+        displayRating1:
+        {
+            type:Number,
+            default:-1
+        },
+        displayRating2:
+        {
+            type:Number,
+            default:-1
+        },
+        displayRating3:
+        {
+            type:Number,
+            default:-1
+        },
+        displayRating4:
+        {
+            type:Number,
+            default:-1
         },
         comments:
         {

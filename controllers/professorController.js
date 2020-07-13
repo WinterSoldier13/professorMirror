@@ -1,44 +1,24 @@
-let professor = require('../models/professor');
+let Professor = require('../models/professor');
 let {isSignedIn} = require('../controllers/authController');
 const { constant } = require('lodash');
+const { update } = require('../models/professor');
 
 
 exports.addProfessor = (req, res) => {
 
-    let newEntry = new professor(req.body);
-    console.log(req.body);
+    let newEntry = new Professor(req.body);
+    console.log(newEntry);
 
-    var profName = req.body.name;
-    var profInstitue = req.body.institute;
-    var profDepartment = req.body.department;
-
-    console.log("The person to search for is ",profName,profInstitue, profDepartment);
-    
-
-    professor.findOne({"name":profName, "institute":profInstitue,"department":profDepartment}, (err, prof)=>
-    {
-        if(err || !prof)
+    newEntry.save((err, prof) => {
+        if(err)
         {
-            console.log("NOT FOUND");
-            newEntry.save((err, prof) => {
-                if(err)
-                {
-                    console.log("ERROR HERE");
-                    return res.status(400).send(err);
-                }
-                else
-                {
-                    console.log("Written to the database");
-                    return res.status(200).json(prof);
-                }
-            })
+            console.log(err);
+            return res.status(400).send(err);
         }
         else
         {
-            console.log("FOUND");
-            id= prof._id;
-            console.log("The id is", id);
-            return res.status(200).json({error:"The professor is already in the database"});
+            console.log("Written to the database");
+            return res.status(200).json(prof);
         }
     })
 
@@ -48,15 +28,17 @@ exports.addProfessor = (req, res) => {
 
 exports.expandProfessor = (req,res) => 
 {
-    professor.findById(req.body.id, (err, prof) => {
+    Professor.findById(req.params.professorId, (err, prof) => {
         if(err || !prof)
         {
+            console.log("NOT FOUND")
             return res.status(500).json({
                 error: "No data found"
             })
         }
         else
         {
+            console.log("Found", prof);
             return res.status(200).json(prof);
         }
     })
@@ -67,7 +49,11 @@ exports.expandProfessor = (req,res) =>
 
 exports.getAllProfessors = (req, res) => 
 {
-    professor.find({}, (err, post) => {
+    const instName = req.params.instituteName;
+    const deptName = req.params.departmentName;
+    console.log("instituteName", instName);
+    console.log("departmentName", deptName);
+    Professor.find({"institute": instName, "department":deptName}, (err, post) => {
         if(err || !post )
         {
             return res.status(400).json(
@@ -78,7 +64,89 @@ exports.getAllProfessors = (req, res) =>
         }
         else
         {
+            let l = post.length;
+            for(var i=0;i<l;i++)
+            {
+                console.log(post[i]);
+            }
             return res.status(200).json(post);
+        
         }
     })
+}
+
+exports.editRating = (req,res) => {
+    let profId = req.params.professorId;
+    console.log("Search for ", profId);
+
+    const{givenRating1, givenRating2, givenRating3, givenRating4} = req.body;
+
+
+    Professor.findById(profId, (err, prof) => {
+        if(err || !prof)
+        {
+            console.log("Prof not in database");
+            return res.status(404).json({error: "Professor NOT FOUND in the Database"});
+        }
+        else
+        {
+            prof.rating_one.push(givenRating1);
+            prof.rating_two.push(givenRating2);
+            prof.rating_three.push(givenRating3);
+            prof.rating_four.push(givenRating4);
+
+            let l = prof.rating_one.length;
+
+            let one=0;
+            let two=0;
+            let three=0;
+            let four=0;
+
+            for(let i=0;i<l;i++)
+            {
+                one+=prof.rating_one[i];
+                console.log('rating one ', prof.rating_one[i]);
+            }
+
+            for(let i=0;i<l;i++)
+            {
+                two+=prof.rating_two[i];
+            }
+
+            for(let i=0;i<l;i++)
+            {
+                three+=prof.rating_three[i];
+            }
+
+            for(let i=0;i<l;i++)
+            {
+                four+=prof.rating_four[i];
+            }
+
+            one/=l;
+            two/=l;
+            three/=l;
+            four/=l;
+            
+            prof.displayRating1=one;
+            prof.displayRating2=two;
+            prof.displayRating3=three;
+            prof.displayRating4=four;
+
+
+
+            prof.save((err, updated)=>{
+                if(err || !updated)
+                {
+                    return res.status(400).send("Failed to save the updated value to the database");
+                }
+                else
+                {
+                    return res.status(200).json(updated);
+                }
+            })
+        }
+
+    })
+
 }
