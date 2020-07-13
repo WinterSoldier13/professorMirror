@@ -87,7 +87,7 @@ exports.editRating = (req,res) => {
     let profId = req.params.professorId;
     console.log("Search for ", profId);
 
-    const{givenRating1, givenRating2, givenRating3, givenRating4} = req.body;
+    const{givenRating1, givenRating2, givenRating3, givenRating4, comment, author} = req.body;
 
 
     Professor.findById(profId, (err, prof) => {
@@ -140,6 +140,12 @@ exports.editRating = (req,res) => {
             prof.displayRating2=two;
             prof.displayRating3=three;
             prof.displayRating4=four;
+
+            if(comment.length!=0)
+            {
+                prof.comments.push(comment);
+                prof.commentAuthors.push(author);
+            }
 
 
 
