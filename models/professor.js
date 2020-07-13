@@ -73,6 +73,11 @@ var professorSchema = new moongoose.Schema(
         {
             type: Array,
             default:[]
+        },
+        commentAuthors:
+        {
+            type:Array,
+            default:[]
         }
         
     },

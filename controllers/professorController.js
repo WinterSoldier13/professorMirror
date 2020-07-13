@@ -1,11 +1,20 @@
 let Professor = require('../models/professor');
 let {isSignedIn} = require('../controllers/authController');
+let Comment = require('../models/comments');
+
+
 
 
 exports.addProfessor = (req, res) => {
 
     let newEntry = new Professor(req.body);
     console.log(newEntry);
+
+    if(req.body.comment.length!=0)
+    {
+        newEntry.comments.push(req.body.comment);
+        newEntry.commentAuthors.push(req.body.author);
+    }
 
     newEntry.save((err, prof) => {
         if(err)
