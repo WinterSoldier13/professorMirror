@@ -7,6 +7,9 @@ const { isSignedIn } = require("../controllers/authController");
 var router = express.Router();
 
 
+
+
+// Different Route functions
 router.get('/professor/:professorId',expandProfessor);
 router.get('/allProfs/:instituteName/:departmentName',getAllProfessors);
 router.put('/addProfessor',isSignedIn, addProfessor);

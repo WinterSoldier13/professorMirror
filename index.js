@@ -15,7 +15,7 @@ const app =express();
 const authRoute = require('./routes/auth');
 const profRoute = require('./routes/professor');
 
-
+//DB Connection
 mongoose
   .connect(process.env.DATABASE, {
     useNewUrlParser: true,
@@ -36,7 +36,6 @@ app.use(cors());
 app.use("/api",profRoute)
 app.use("/api",authRoute)
 
-//DB Connection
 
 
 
