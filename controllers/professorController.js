@@ -1,9 +1,4 @@
 let Professor = require('../models/professor');
-let {isSignedIn} = require('../controllers/authController');
-let Comment = require('../models/comments');
-
-
-
 
 exports.addProfessor = (req, res) => {
 
@@ -28,9 +23,6 @@ exports.addProfessor = (req, res) => {
             return res.status(200).json(prof);
         }
     })
-
-    
-      
 }
 
 exports.expandProfessor = (req,res) => 
