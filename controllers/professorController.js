@@ -1,5 +1,8 @@
 let Professor = require('../models/professor');
 
+
+// FUNCTIONAL
+// BUG: SAME item added more than once in the database
 exports.addProfessor = (req, res) => {
 
     let newEntry = new Professor(req.body);
@@ -25,6 +28,8 @@ exports.addProfessor = (req, res) => {
     })
 }
 
+
+// FUNCTIONAL
 exports.expandProfessor = (req,res) => 
 {
     Professor.findById(req.params.professorId, (err, prof) => {
@@ -44,8 +49,7 @@ exports.expandProfessor = (req,res) =>
     
 }
 
-
-
+// FUNCTIONAL
 // This function sends all professors from a given institute and a given department
 exports.getAllProfessors = (req, res) => 
 {
@@ -75,6 +79,8 @@ exports.getAllProfessors = (req, res) =>
     })
 }
 
+
+// FUNCTIONAL
 exports.editRating = (req,res) => {
     let profId = req.params.professorId;
     console.log("Search for ", profId);
