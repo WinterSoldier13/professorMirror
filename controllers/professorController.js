@@ -1,5 +1,9 @@
 let Professor = require('../models/professor');
 
+exports.allInstitutes = (req,res) => {
+    
+}
+
 
 // FUNCTIONAL
 // BUG: SAME item added more than once in the database
