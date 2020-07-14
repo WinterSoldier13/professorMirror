@@ -1,7 +1,29 @@
 let Professor = require('../models/professor');
 
 exports.allInstitutes = (req,res) => {
-    
+    Professor.find({}, (err, prof)=>
+    {
+        if(err || !prof)
+        {
+            return res.status(400).json({
+                error:"No institute found"
+            })
+        }
+        else
+        {
+            let l = prof.length;
+            let instituteNames = [];
+
+            for(let i=0;i<l;i++)
+            {
+                instituteNames.push(prof[i].institute);
+            }
+            return res.status(200).json(instituteNames);
+
+        }
+
+    }
+    )
 }
 
 
